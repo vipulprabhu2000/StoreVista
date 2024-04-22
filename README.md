@@ -1,6 +1,16 @@
+ShopWise Homepage
 
-Django
-======
+![Screenshot 2024-04-22 112823](https://github.com/vipulprabhu2000/StoreVista/assets/71282503/0222604b-d365-427a-9c7b-ed9157881f6f)
+
+ShopWise Cateogry (For Specific Category)
+
+![Ecom_category](https://github.com/vipulprabhu2000/StoreVista/assets/71282503/eaedc60e-d09e-4904-afb6-adac01496493)
+
+
+
+
+Django Installation
+===================
 
 Django is a high-level Python web framework that encourages rapid development
 and clean, pragmatic design. Thanks for checking it out.
