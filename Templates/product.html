@@ -26,6 +26,7 @@
                       <p class="card-text">{{product.price}}</p>
                       <br><br>
                       {% endif %}
+                      <button class="btn btn-secondary" value="{{product.id}}" id="add-cart">Add to Cart</button>
                       <br><br>
                       <br><br>
                     </div>
@@ -33,10 +34,40 @@
                 </div>
               </div>
           <br><br><br><br><br><br><br><br>
+
         </p>
       </div>
     </center>
   </div>
 </div>
+
+<script>
+
+$(document).on('click','#add-cart',function(e){
+
+  e.preventDefault();
+
+  $.ajax({
+      type:'POST',
+      url: "{% url 'cart_add' %}",
+      data:{
+        product_id:$('#add-cart').val(),
+        csrfmiddlewaretoken:'{{csrf_token }}',
+        action:'post'
+      },
+
+      success:function(json){
+        console.log(json)
+      },
+
+      error: function(xhr,errmsg,err)
+      {
+
+      }
+
+  });
+})
+
+</script>
 
 {% endblock %}
