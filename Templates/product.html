@@ -18,12 +18,12 @@
                       <p class="card-text">{{product.description}}</p>
                       
                       {% if product.is_sale %}
-                      <strike>{{product.price}}</strike>
+                      <strike>Rs {{product.price}}</strike>
 
                       <p class="card-text">Rs {{product.sale_price}}</p>
                          <br><br>
                       {% else %}
-                      <p class="card-text">{{product.price}}</p>
+                      <p class="card-text">Rs {{product.price}}</p>
                       <br><br>
                       {% endif %}
                       <button class="btn btn-secondary" value="{{product.id}}" id="add-cart">Add to Cart</button>
@@ -58,6 +58,7 @@ $(document).on('click','#add-cart',function(e){
 
       success:function(json){
         console.log(json)
+        document.getElementById("cart_quantity").textContent=json.qty
       },
 
       error: function(xhr,errmsg,err)
