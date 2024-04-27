@@ -6,6 +6,11 @@ ShopWise Cateogry (For Specific Category)
 
 ![Ecom_category](https://github.com/vipulprabhu2000/StoreVista/assets/71282503/eaedc60e-d09e-4904-afb6-adac01496493)
 
+ShopWise Cart 
+
+![image](https://github.com/vipulprabhu2000/StoreVista/assets/71282503/6a294033-f8f5-422b-929c-d26846638ce0)
+
+
 
 
 
