@@ -9,6 +9,7 @@ from .forms import SignUpForm
 # Create your views here.
 
 
+
 def index(request):
     products=Product.objects.all()
 
@@ -25,7 +26,7 @@ def login_user(request):
         user =authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
-            messages.success(request,("You have succcesfully Logged in"))
+            messages.success(request,("You have Succcesfully Logged in"))
             return redirect("index")
         else:
             messages.success(request,"Login Unsuccessful")
