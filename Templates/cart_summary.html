@@ -41,7 +41,28 @@
                       <p class="card-text">Rs {{product.price}}</p>
                       <br><br>
                       {% endif %}
-                      <button class="btn btn-secondary" value="{{product.id}}" id="add-cart">Add to Cart</button>
+                      <br>
+                      <div class="row justify-content-center">
+                        <div class="col-md-2">Quantity:</div>
+                          <div class="col-md-2">
+                          <select class="form-select" id="qty-cart">
+
+                          {% for key,value in quantities.items %}
+                            {%if key == product.id|slugify  %}
+                            <option selected >{{value}}</option>
+                              print(value)
+                            {% endif %}
+                          {% endfor %}
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
+                      </div>
+                      <br>
+                      <button class="btn btn-secondary" value="" id="">Home</button>
                       <br><br>
                       <br><br>
                     </div>
