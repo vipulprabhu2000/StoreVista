@@ -38,8 +38,8 @@ class Cart():
         return quantity
     
     def update(self,product,Quantity):
-        product_id=product
-        product_qty=Quantity
+        product_id=str(product)
+        product_qty=int(Quantity)
 
         ourcart=self.cart
         ourcart[product_id]=product_qty
@@ -48,3 +48,18 @@ class Cart():
         thing=self.cart
 
         return thing
+    
+    def delete_item(self,Product_id):
+        ourcart= self.cart
+        print(f"The cart ***********{ourcart}")
+    
+        for key,value in ourcart.items():
+            if key==Product_id:
+                del ourcart[key]
+                break
+
+        self.session.modified=True
+        thing =self.cart
+
+        return thing
+
