@@ -33,5 +33,15 @@ def cart_delete(request):
     pass
 
 def cart_update(request):
-    pass
+    cart =Cart(request)
+    if request.POST.get('action')=='post':
+
+        Product_id=request.POST.get('product_id')
+        Product_qty=request.POST.get('product_qty')
+        print(f"Quantity{Product_qty}")
+
+        cart.update(product=Product_id,Quantity=Product_qty)
+
+        response=JsonResponse({'qty':Product_qty})
+        return response
 
