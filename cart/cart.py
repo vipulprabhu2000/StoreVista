@@ -62,4 +62,32 @@ class Cart():
         thing =self.cart
 
         return thing
+    
+    def get_total(self):
+        
+        #getting the product ids
+        product_ids=self.cart.keys()
+
+        products=Product.objects.filter(id__in=product_ids)
+        total=0
+        ourcart=self.cart
+
+
+        for key,value in ourcart.items():
+            key=int(key)
+            for product in products:
+                if product.id==key:
+                    if product.is_sale:
+                        total=total+product.sale_price*value
+                    else:
+                        total=total+product.price*value
+
+
+
+        #print("total",total)
+        return total
+
+
+
+
 
