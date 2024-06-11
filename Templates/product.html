@@ -72,8 +72,10 @@ $(document).on('click','#add-cart',function(e){
       },
 
       success:function(json){
-        console.log(json)
         document.getElementById("cart_quantity").textContent=json.qty
+        location.reload()
+        console.log(json)
+        print("addded" ,json)
       },
 
       error: function(xhr,errmsg,err)

@@ -9,6 +9,14 @@ from .forms import SignUpForm
 # Create your views here.
 
 
+def update_user(request):
+    #form=SignUpForm()
+
+    return render(request,"update_user.html",{})
+
+def category_summary(request):
+    categories=Category.objects.all()
+    return render(request,"category_summary.html",{"categories":categories})
 
 def index(request):
     products=Product.objects.all()
