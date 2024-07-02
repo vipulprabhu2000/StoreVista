@@ -1,12 +1,64 @@
 from django.shortcuts import render,redirect
-from .models import Product,Category
+from .models import Product,Category,Profile
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .forms import SignUpForm,updateuserform,ChangepasswordForm
+from .forms import SignUpForm,updateuserform,ChangepasswordForm,UserInfoForm
+from django.db.models import Q
 # Create your views here.
+
+def search(request):
+
+    if request.method=="POST":
+        searched_Product=request.POST['Searched']
+        #print(searched_Product)
+        #searching the obj in the Db
+        """ search=Category.objects.filter(name__icontains=searched_Product)
+        print(search)
+        if search:
+            category=Category.objects.get(name=searched_Product)
+            Products=Product.objects.filter(category=category)
+            return render(request,'search.html',{'searched_Product':Products})
+        else:
+            messages.success(request,"Product being is Serched is not Present...")
+            return render(request,'search.html',{})  """
+        search=Product.objects.filter(Q(name__icontains=searched_Product)|Q(description__icontains=searched_Product))
+        if not search:
+            messages.success(request,"That Product does not exist....")
+            return redirect('search')
+        else:
+            return render(request,'search.html',{'searched_Product':search})
+        
+    return render(request,'search.html',{})
+
+
+
+
+
+
+
+
+
+    
+
+def update_info(request):
+    if request.user.is_authenticated:
+        current_user=Profile.objects.get(user__id=request.user.id)
+        update_user=UserInfoForm(request.POST or None , instance=current_user)
+
+        if update_user.is_valid():
+            update_user.save()
+
+            messages.success(request,"User has Info been Updated !!")
+            return redirect('index')
+        return render(request,"update_info.html",{"user_form":update_user})
+    else:
+        messages.success(request,"You must be Logged in to Access this Page!!")
+        return redirect('index')
+
+    
 
 def update_password(request):
     if request.user.is_authenticated:
@@ -85,15 +137,17 @@ def logout_user(request):
 def register_user(request):
     form=SignUpForm()
     if request.method=="POST":
+        
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print("Success")
             form.save()
             username=form.cleaned_data['username']
             password=form.cleaned_data['password1']
             user=authenticate(request, username=username,password=password)
             login(request,user)
-            messages.success(request,("You have Registered Sucessfully.... "))
-            return redirect('index')
+            messages.success(request,("You have Registered Sucessfully . Fill out the Profile Info  "))
+            return redirect('update_info')
         else:
             messages.success(request,("Oops there was a problem registering .... Please try again"))
             return redirect('register')
@@ -115,4 +169,4 @@ def category(request,foo):
     except:
         messages.info.success(request,"That Category doesn't Exist!!!!......")
         return redirect('index')
-        
+    

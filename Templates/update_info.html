@@ -3,7 +3,7 @@
 <header class="bg-dark py-5">
   <div class="container px-4 px-lg-5 my-5">
     <div class="text-center text-white">
-      <h1 class="display-4 fw-bolder">Update User</h1>
+      <h1 class="display-4 fw-bolder">Update Information</h1>
       <p class="lead fw-normal text-white-50 mb-0">
         Welcome to our Ecommerce Website ShopWise
       </p>
@@ -16,14 +16,14 @@
     <center>
       <div class="col-8">
         <br><br>
-        <form method="POST" action="{% url 'update_user' %}">
+        <form method="POST" action="{% url 'update_info' %}">
             {% csrf_token %}
             {{ user_form.as_p }}
             <br><br>
             <button type="submit"class="btn btn-secondary">Update </button>
           </form>
           <br><br><br>
-          <a href="{% url 'update_password' %}" class="btn btn-secondary">Update Password</a>
+      
       </div>
       <br><br><br><br>
     </center>
