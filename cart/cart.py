@@ -1,9 +1,10 @@
-from store.models import Product
+from store.models import Product,Profile
 
 
 class Cart():
     def __init__(self,request):
         self.session=request.session
+        self.request=request
 
         cart=self.session.get('session_key')
 
@@ -11,6 +12,27 @@ class Cart():
             cart=self.session['session_key']={}
 
         self.cart=cart
+    
+    def db_add(self,product,quantity):
+        product_id= str(product)
+        product_qty=quantity
+
+        if product_id in self.cart:
+            pass
+        else:
+            self.cart[product_id]=int(product_qty)
+
+        if self.request.user.is_authenticated:
+            current_user=Profile.objects.filter(user__id=self.request.user.id)
+            cart_obj=str(self.cart)
+            cart_obj=cart_obj.replace("\'","\"")
+            current_user.update(Old_cart=cart_obj)
+
+
+
+
+
+        self.session.modified=True
 
 
     def add(self,product,quantity):
@@ -21,6 +43,16 @@ class Cart():
             pass
         else:
             self.cart[product_id]=int(product_qty)
+
+        if self.request.user.is_authenticated:
+            current_user=Profile.objects.filter(user__id=self.request.user.id)
+            cart_obj=str(self.cart)
+            cart_obj=cart_obj.replace("\'","\"")
+            current_user.update(Old_cart=cart_obj)
+
+
+
+
 
         self.session.modified=True
 
@@ -45,6 +77,12 @@ class Cart():
         ourcart[product_id]=product_qty
 
         self.session.modified=True
+        if self.request.user.is_authenticated:
+            current_user=Profile.objects.filter(user__id=self.request.user.id)
+            cart_obj=str(self.cart)
+            cart_obj=cart_obj.replace("\'","\"")
+            current_user.update(Old_cart=cart_obj)
+
         thing=self.cart
 
         return thing
@@ -59,6 +97,12 @@ class Cart():
                 break
 
         self.session.modified=True
+        if self.request.user.is_authenticated:
+            current_user=Profile.objects.filter(user__id=self.request.user.id)
+            cart_obj=str(self.cart)
+            cart_obj=cart_obj.replace("\'","\"")
+            current_user.update(Old_cart=cart_obj)
+            
         thing =self.cart
 
         return thing
