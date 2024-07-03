@@ -7,6 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm,updateuserform,ChangepasswordForm,UserInfoForm
 from django.db.models import Q
+import json
+from cart.cart import Cart
 # Create your views here.
 
 def search(request):
@@ -32,13 +34,6 @@ def search(request):
             return render(request,'search.html',{'searched_Product':search})
         
     return render(request,'search.html',{})
-
-
-
-
-
-
-
 
 
     
@@ -119,6 +114,20 @@ def login_user(request):
         user =authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
+
+            current_user=Profile.objects.get(user__id=request.user.id)
+            Dbcart=current_user.Old_cart
+
+            if Dbcart:
+                print(Dbcart)
+                cart_data=json.loads(Dbcart)
+
+                cart=Cart(request)
+                for key,value in cart_data.items():
+                    cart.db_add(product=key,quantity=value)
+
+
+
             messages.success(request,("You have Succcesfully Logged in"))
             return redirect("index")
         else:
