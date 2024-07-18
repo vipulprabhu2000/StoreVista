@@ -7,6 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm,updateuserform,ChangepasswordForm,UserInfoForm
 from django.db.models import Q
+
+from payment.models import ShippingAddress
+from payment.forms import Shippingform
+
 import json
 from cart.cart import Cart
 # Create your views here.
@@ -41,14 +45,18 @@ def search(request):
 def update_info(request):
     if request.user.is_authenticated:
         current_user=Profile.objects.get(user__id=request.user.id)
+
+        Shipping_user=ShippingAddress.objects.get(user__id=request.user.id)
+
+        shipping_form=Shippingform(request.POST or None, instance=Shipping_user)
         update_user=UserInfoForm(request.POST or None , instance=current_user)
 
-        if update_user.is_valid():
+        if update_user.is_valid() or shipping_form.is_valid():
             update_user.save()
-
+            shipping_form.save()
             messages.success(request,"User has Info been Updated !!")
             return redirect('index')
-        return render(request,"update_info.html",{"user_form":update_user})
+        return render(request,"update_info.html",{"user_form":update_user,"shipping_form":shipping_form})
     else:
         messages.success(request,"You must be Logged in to Access this Page!!")
         return redirect('index')
@@ -119,7 +127,7 @@ def login_user(request):
             Dbcart=current_user.Old_cart
 
             if Dbcart:
-                print(Dbcart)
+                #print(Dbcart)
                 cart_data=json.loads(Dbcart)
 
                 cart=Cart(request)
@@ -149,7 +157,7 @@ def register_user(request):
         
         form = SignUpForm(request.POST)
         if form.is_valid():
-            print("Success")
+            #print("Success")
             form.save()
             username=form.cleaned_data['username']
             password=form.cleaned_data['password1']

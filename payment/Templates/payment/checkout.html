@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+<header class="bg-dark py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Your Cart</h1>
+      <p class="lead fw-normal text-white-50 mb-0"></p>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <div class="=row">
+   
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header">Order Summary</div>
+          <div class="card-body">
+            {% for product in cart_product %} {{product.name}}: 
+            {% if product.is_sale %} 
+            Rs {{product.sale_price}} 
+               {% else %}
+            Rs {{product.price}} 
+            {% endif %}
+            <br />
+            <small>Quantity:</small>
+            {% for key,value in quantities.items %} 
+               {%if key == product.id|slugify %}
+                  {{value}}
+             {% endif %} 
+            {% endfor %} 
+            <br><br>
+
+        {% endfor %}
+            Total : Rs {{total}} /-
+            <br><br>
+             <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Info</a>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <div class="card">
+        <div class="card-header">
+          Shipping Info</div>
+          <div class="card-body">
+              {{ shipping_form.as_p }}
+
+          </div>
+        </div>
+      </div>
+      <br>
+      <a href="#"class="btn btn-secondary">Continue to Billing</a>
+    
+  </div>
+</div>
+
+{% endblock %}

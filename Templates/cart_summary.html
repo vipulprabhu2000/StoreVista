@@ -80,7 +80,9 @@
 </div>
   
     {% endfor %}
-    <strong>Total :{{total}} </strong>
+    <strong>Total :{{total}} </strong><br><br>
+    <a href="{% url 'checkout' %}" class="btn btn-success">
+      Checkout</a>
     {% else %}
     There is nothing present in the Cart..... 
     <br><br><br><br><br><br><br><br><br>
