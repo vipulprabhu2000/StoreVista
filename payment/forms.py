@@ -16,3 +16,16 @@ class Shippingform(forms.ModelForm):
         model=ShippingAddress
         fields=["Shipping_full_name","Shipping_email","Shipping_address1","Shipping_address2","Shipping_state","Shipping_country","Shipping_zipcode"]
         exclude=['user',]
+
+
+
+class Payment_form(forms.Form):
+    card_name=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card name'}),required=True)
+    card_number=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card Number'}),required=True)
+    card_exp_date=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card Expiry Date'}),required=True)
+    card_cvv=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card CVV'}),required=True)
+    card_address1=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card Address1'}),required=True)
+    card_address2=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card Address 2'}),required=False)
+    card_city=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card City'}),required=True)
+    card_state=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card state'}),required=True)
+    card_zipcode=forms.CharField(label=" ",widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Card zipcode'}),required=True)
