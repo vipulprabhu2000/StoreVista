@@ -34,9 +34,7 @@ def process_order(request):
             create_order.save()
             messages.success(request,"Order Placed!!")
             return render(request,'index.html',{})
-
-
-
+        
     else:
         messages.success(request,"Access Denied!!")
         return render(request,'index.html',{})
