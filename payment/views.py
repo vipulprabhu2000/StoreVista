@@ -20,18 +20,49 @@ def process_order(request):
         print(shipping_Address)
         full_name=my_shipping['Shipping_full_name']
         email=my_shipping['Shipping_email']
-        amount_paid=my_shipping['totals']
+        amount_paid=total
 
-        if request.user.authenticated:
+        def common_orderitem_creation(create_order,flag):
+                order_id=create_order.pk
+                user=request.user
+                for products in cart_product:
+                    product_id=products.id
+                    if products.is_sale:
+                        price=products.sale_price
+                    else:
+                        price=products.price
+
+                    for key,value in cart_qty.items():
+                        if int(key)==product_id:
+                            if(flag==1):
+                                create_order_item=OrderItem(user=user,order_id=order_id,product_id=product_id,quantity=value,price=price)
+                            else:
+                                create_order_item=OrderItem(order_id=order_id,product_id=product_id,quantity=value,price=price)
+                            create_order_item.save()
+
+                for key in list(request.session.keys()):
+                    if key=="session_key":
+                        #dictionary with Product id and quantity
+                        print(request.session[key])
+                        del request.session[key]
+                        
+
+                messages.success(request,"Order Placed!!")
+
+        if request.user.is_authenticated:
             user=request.user
             create_order=Order(user=user,full_name=full_name,email=email,amount_paid=amount_paid,Shipping_address=shipping_Address)
             create_order.save()
-            messages.success(request,"Order Placed!!")
+            
+
+            common_orderitem_creation(create_order,flag=1)
             return render(request,'index.html',{})
+
 
         else:
             create_order=Order(full_name=full_name,email=email,amount_paid=amount_paid,Shipping_address=shipping_Address)
             create_order.save()
+            common_orderitem_creation(create_order,flag=2)
             messages.success(request,"Order Placed!!")
             return render(request,'index.html',{})
         
@@ -54,9 +85,10 @@ def billing_info(request):
             return render(request,"payment/billing_info.html",{"cart_product":cart_product,"quantities":cart_qty,"total":total,"shipping_info":request.POST,"billing_form":billing_form})
         else:
             billing_form=Payment_form()
-            messages.success(request,"AccessDenied")
-            return render(request,"index.html",{})
+            return render(request,"payment/billing_info.html",{"cart_product":cart_product,"quantities":cart_qty,"total":total,"shipping_info":request.POST,"billing_form":billing_form})
         
+       
+
 
 def checkout(request):
     cart=Cart(request)
