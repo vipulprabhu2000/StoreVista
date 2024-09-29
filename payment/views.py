@@ -1,9 +1,56 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from cart.cart import Cart
 from payment.models import ShippingAddress,Order,OrderItem
 from payment.forms import Shippingform,Payment_form
 import django.contrib.messages as messages 
 from django.contrib.auth.models import User
+from datetime import datetime
+import datetime
+from store.models import Profile
+
+def orders(request,pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        order=Order.objects.get(id=pk)
+        items=OrderItem.objects.filter(order=pk)
+
+        if request.POST:
+            status=request.POST['shipped_status']
+            order=Order.objects.filter(id=pk)
+            now=datetime.datetime.now()
+
+            if status=="True":
+                order.update(shipped=True,date_shipped=now)
+
+            else:
+                order.update(shipped=False,date_shipped=now)
+            messages.success(request,"Updated")
+            return redirect('index')
+            
+
+        return render(request,"payment/orders.html",{"order":order,"items":items})
+    else:
+        messages.success(request,"Access Denied!!")
+        return redirect('index')
+
+def Not_Shipped_order(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders=Order.objects.filter(shipped=False)
+        return render(request,"payment/Not_Shipped_order.html",{"orders":orders})
+    else:
+        messages.success(request,"Access Denied!!")
+        return redirect('index.html')
+
+
+def Shipped_order(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders=Order.objects.filter(shipped=True)
+        return render(request,"payment/Shipped_order.html",{"orders":orders})
+    else:
+        messages.success(request,"Access Denied!!")
+        return render(request,'index.html',{})
+
+
+
 
 # Create your views here.
 def process_order(request):
@@ -45,7 +92,9 @@ def process_order(request):
                         #dictionary with Product id and quantity
                         print(request.session[key])
                         del request.session[key]
-                        
+                
+                current_user=Profile.objects.filter(user__id=request.user.id)
+                current_user.update(Old_cart="")
 
                 messages.success(request,"Order Placed!!")
 
