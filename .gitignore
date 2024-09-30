@@ -1,4 +1,4 @@
 # created by virtualenv automatically
-settings.py
 .gitignore
+settings.py
 .env
